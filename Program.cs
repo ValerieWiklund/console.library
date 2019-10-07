@@ -19,14 +19,53 @@ namespace CLibrary
       Console.Clear();
       Console.WriteLine("Welcome to The Library!");
       Console.WriteLine("");
-      myLibrary.PrintBooks();
-      Console.WriteLine("");
-      Console.WriteLine("Select a book number to checkout (Q)uit, or (R)eturn a book");
-      string choice = Console.ReadLine().ToLower();
 
+      Enum activeMenu = Menus.CheckoutBook;
+      bool inLibrary = true;
+      while (inLibrary)
+      {
+        switch (activeMenu)
+        {
+          case Menus.CheckoutBook:
+            myLibrary.PrintBooks();
+            break;
+          case Menus.ReturnBook:
+            myLibrary.PrintCheckedOut();
+            break;
+        }
+        string selection = Console.ReadLine();
+        switch (selection.ToLower())
+        {
+          case "q":
+            inLibrary = false;
+            break;
+          case "r":
+            activeMenu = Menus.ReturnBook;
+            Console.Clear();
+            break;
+          case "a":
+            activeMenu = Menus.CheckoutBook;
+            Console.Clear();
+            break;
+          default:
+            if (activeMenu.Equals(Menus.CheckoutBook))
+            {
+              myLibrary.Checkout(selection);
+            }
+            else
+            {
+              myLibrary.Return(selection);
+            }
+            break;
+        }
 
-
-
+      }
+      System.Console.WriteLine("Good-Bye");
+    }
+    public enum Menus
+    {
+      CheckoutBook,
+      ReturnBook
     }
   }
 }
